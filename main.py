@@ -1,3 +1,4 @@
 import marubatu
 
-marubatu.game_main()
+if __name__ == '__main__':
+    marubatu.game_main()
