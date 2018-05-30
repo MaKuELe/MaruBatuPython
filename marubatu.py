@@ -53,7 +53,7 @@ def game_main():
             target_index=place.index(place_val[0])
         except ValueError:
             print("指定されたマスが見つかりませんでした。")
-
+            continue
         try:
             #入力値を ○ × に変換　
             #指定されたマスの値を削除
