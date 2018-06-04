@@ -10,36 +10,41 @@ def print_list(list_val):
 #勝利判定をする関数。連座苦する3マスが同じ値だった場合に、3ますを埋めている値を勝利者として表示する。
 #現在3マスの持つ値は評価していない。○でも×でもその他の値でも
 def winner(list_val):
+    win_player="No Winner"
     if list_val[0]==list_val[1] and list_val[1]==list_val[2]:
-        print (" Win:%c" % (list_val[0]))
-    elif list_val[0]==list_val[4] and list_val[8]==list_val[9]:
-        print (" Win:%c" % (list_val[0]))
+        win_player=(list_val[0]);
+    elif list_val[0]==list_val[4] and list_val[4]==list_val[8]:
+        win_player=(list_val[0]);
     elif list_val[0]==list_val[3] and list_val[3]==list_val[6]:
-        print (" Win:%c" % (list_val[0]))
+        win_player=(list_val[0]);
     elif list_val[1]==list_val[4] and list_val[4]==list_val[8]:
-        print (" Win:%c" % (list_val[1]))
+        win_player=(list_val[1]);
     elif list_val[2]==list_val[4] and list_val[4]==list_val[6]:
-        print (" Win:%c" % (list_val[2]))
+        win_player=(list_val[2]);
     elif list_val[2]==list_val[5] and list_val[5]==list_val[8]:
-        print (" Win:%c" % (list_val[2]))
+        win_player=(list_val[2]);
     elif list_val[3]==list_val[4] and list_val[4]==list_val[5]:
-        print (" Win:%c" % (list_val[3]))
+        win_player=(list_val[3]);
     elif list_val[6]==list_val[7] and list_val[7]==list_val[8]:
-        print (" Win:%c" % (list_val[6]))
-    else:
-        return "not fin"
-    return "fin"
+        win_player=(list_val[6]);
+        
+    return win_player
 
 #ゲームのメインループ。9つのマスを埋めるか、連続する3マスを同じ値で生めたプレイヤーが現れた時点で終了する。
 def game_main():
     place=['1','2','3','4','5','6','7','8',"9"]
+    mark=["1","2"]
     counter =0
     while counter<9:
         #現状の増すの状態を表示
         print_list(place)
 
         #○を記すか、×を記すか入力してもらう
-        write_val = input("○:1 or ×:2:")
+        #write_val = input("○:1 or ×:2:")
+        write_val=mark[counter%2];
+
+            
+            
 
         #マス目を指定してもらう
         #現状0だったら終了。
@@ -72,7 +77,9 @@ def game_main():
             continue
 
         #勝利判定
-        if "fin"==winner(place):
+        result=winner(place)
+        if "No Winner"!=result:
+            print (" Win:%s" % (result))
             break
         
         #入力回数の加算
