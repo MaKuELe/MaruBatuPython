@@ -62,7 +62,7 @@ class TextPanel(wx.Panel):
       
         super().__init__(parent, wx.ID_ANY)
           
-        calc_text = wx.TextCtrl(self, wx.ID_ANY, style=wx.TE_RIGHT)
+        calc_text = wx.StaticText(self, wx.ID_ANY, style=wx.TE_RIGHT)
         layout = wx.BoxSizer(wx.HORIZONTAL)
         layout.Add(calc_text, 1)
         self.SetSizer(layout)
@@ -90,10 +90,20 @@ class CalcButtonPanel(wx.Panel):
     画面下部に表示されるボタン部分
     """
     button_t=[]
-
+    
+    player_mark=("○","×");
     def click_button_1(self,event):
         clicked_button=event.GetEventObject()
-        clicked_button.SetLabel("A")
+        if(clicked_button.GetLabel()!="○" and clicked_button.GetLabel()!="×"):
+            clicked_button.SetLabel(self.player_mark[self.counter%2])
+            self.counter+=1
+
+        for i in range(0,9):
+            print(self.button_t[i].GetLabel())
+
+
+        if self.counter==9:
+            exit()
 #        wx.CommandEvent.GetEventObject
 
     def __init__(self, parent):
@@ -105,16 +115,17 @@ class CalcButtonPanel(wx.Panel):
         ,'7','8','9')
   
         layout = wx.GridSizer(3, 3,0,0)
-          
+        
         for i in button_collection:
             self.button_t.append(wx.Button(self, wx.ID_ANY, i,size=(30,30),name=i))
-            
+           
         for i in range(0,9):
             self.button_t[i].Bind(wx.EVT_BUTTON,self.click_button_1)
             layout.Add(self.button_t[i], 1, wx.EXPAND)
 
         self.SetSizer(layout)
-        
+        self.counter=0;
+
   
 
 if __name__ == '__main__':
