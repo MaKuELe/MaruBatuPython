@@ -7,81 +7,67 @@ def print_list(list_val):
         else:
            print("|"+list_val[i],end="");
 
-#勝利判定をする関数。連座苦する3マスが同じ値だった場合に、3ますを埋めている値を勝利者として表示する。
-#現在3マスの持つ値は評価していない。○でも×でもその他の値でも
-def winner(list_val):
-    win_player="No Winner"
-    if list_val[0]==list_val[1] and list_val[1]==list_val[2]:
-        win_player=(list_val[0]);
-    elif list_val[0]==list_val[4] and list_val[4]==list_val[8]:
-        win_player=(list_val[0]);
-    elif list_val[0]==list_val[3] and list_val[3]==list_val[6]:
-        win_player=(list_val[0]);
-    elif list_val[1]==list_val[4] and list_val[4]==list_val[8]:
-        win_player=(list_val[1]);
-    elif list_val[2]==list_val[4] and list_val[4]==list_val[6]:
-        win_player=(list_val[2]);
-    elif list_val[2]==list_val[5] and list_val[5]==list_val[8]:
-        win_player=(list_val[2]);
-    elif list_val[3]==list_val[4] and list_val[4]==list_val[5]:
-        win_player=(list_val[3]);
-    elif list_val[6]==list_val[7] and list_val[7]==list_val[8]:
-        win_player=(list_val[6]);
-        
-    return win_player
 
-#ゲームのメインループ。9つのマスを埋めるか、連続する3マスを同じ値で生めたプレイヤーが現れた時点で終了する。
-def game_main():
-    place=['1','2','3','4','5','6','7','8',"9"]
-    mark=["1","2"]
-    counter =0
-    while counter<9:
-        #現状の増すの状態を表示
-        print_list(place)
+class marubatu_data:
+    def __init__(self):
+        self.square=['1','2','3','4','5','6','7','8',"9"]
+        self.mark=["p1","p2"]
+        self.input_counter=0
 
-        #○を記すか、×を記すか入力してもらう
-        #write_val = input("○:1 or ×:2:")
-        write_val=mark[counter%2];
+        self.game_message="ゲームを始めます"
 
-            
-            
-
-        #マス目を指定してもらう
-        #現状0だったら終了。
-        place_val = input("to :")
-        if place_val[0]=="0":
-            exit()
-
-        #マス目を検索
-        # 範囲外のマスを指定された場合ValueErrorで処理  
+    def SetSquare(self,index):
         try:
-            target_index=place.index(place_val[0])
+            self.square[index]=self.mark[self.input_counter%2]
+            self.input_counter+=1;
         except ValueError:
-            print("指定されたマスが見つかりませんでした。")
-            continue
-        try:
-            #入力値を ○ × に変換　
-            #指定されたマスの値を削除
-            #削除した位置に○か×を挿入
-            if write_val[0] =="1":
-                write="○"    
-            elif write_val[0] =="2":
-                write="×" 
-            else:
-                break;
-            place.pop(target_index)
-            place.insert(target_index,write)
-        except :
-            #とりあえず例外処理
-            print("EXEPTIN")
-            continue
+            print("マスの範囲外が指定されました。")
+            return False
 
-        #勝利判定
-        result=winner(place)
-        if "No Winner"!=result:
-            print (" Win:%s" % (result))
-            break
+        return True
+
+    def GetSquareAll(self):
+        return  self.square;
+
+    def GameResult(self):
+        winner=self.CulcWinner()
+        if winner!="No Winner":
+            return winner
         
-        #入力回数の加算
-        counter+=1
-    return 1
+        if self.input_counter>9:
+            return "Drow"
+        
+        return "Countinue"
+
+    def CulcWinner(self):
+        win_player="No Winner"
+        if self.square[0]==self.square[1] and self.square[1]==self.square[2]:
+            win_player=(self.square[0]);
+        elif self.square[0]==self.square[4] and self.square[4]==self.square[8]:
+            win_player=(self.square[0]);
+        elif self.square[0]==self.square[3] and self.square[3]==self.square[6]:
+            win_player=(self.square[0]);
+        elif self.square[1]==self.square[4] and self.square[4]==self.square[8]:
+            win_player=(self.square[1]);
+        elif self.square[2]==self.square[4] and self.square[4]==self.square[6]:
+            win_player=(self.square[2]);
+        elif self.square[2]==self.square[5] and self.square[5]==self.square[8]:
+            win_player=(self.square[2]);
+        elif self.square[3]==self.square[4] and self.square[4]==self.square[5]:
+            win_player=(self.square[3]);
+        elif self.square[6]==self.square[7] and self.square[7]==self.square[8]:
+            win_player=(self.square[6]);
+        return win_player
+
+        
+def marubatu_game():
+    game=marubatu_data()
+
+    while game.GameResult()=="Countinue":
+        print_list(game.GetSquareAll())
+        forindex=input("1~9:")
+        game.SetSquare(int(forindex)-1)
+    
+    print_list(game.GetSquareAll())
+    return game.GameResult()
+        
