@@ -29,12 +29,22 @@ class marubatu_data:
     def GetSquareAll(self):
         return  self.square;
 
+    def GetSquareAt(self,index):
+    
+        if 0>index and index>9:
+             return (False,-1)
+        
+        return (True,self.square[index])
+
+            
+        
+
     def GameResult(self):
         winner=self.CulcWinner()
         if winner!="No Winner":
             return winner
         
-        if self.input_counter>9:
+        if self.input_counter>=9:
             return "Drow"
         
         return "Countinue"
@@ -58,7 +68,10 @@ class marubatu_data:
         elif self.square[6]==self.square[7] and self.square[7]==self.square[8]:
             win_player=(self.square[6]);
         return win_player
-
+    
+    
+    def GetMessage(self):
+        return self.game_message
         
 def marubatu_game():
     game=marubatu_data()
