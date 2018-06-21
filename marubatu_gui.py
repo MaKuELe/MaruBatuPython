@@ -41,19 +41,33 @@ class MarubatuMenu(wx.MenuBar):
     """
     CalcFrameにセットするメニューバークラス
     """
-  
+    
+    
+
+    def onMenuManageClick(self,event):
+
+        menu_id=event.GetId()
+        menu_obj=event.GetEventObject()
+        menu_label=menu_obj.GetLabel(menu_id)
+
+        if menu_label==self.RESET_MENU_LABEL:
+            print(self.RESET_MENU_LABEL)
+        if menu_label==self.EXIT_MENU_LABEL:
+            wx.Exit()
+
+                
+            
     def __init__(self):
-  
         super().__init__()
-          
         menu_manage = wx.Menu()
-        menu_manage.Append(wx.ID_ANY, 'リセット')
-        menu_manage.Append(wx.ID_ANY, '終了')
-          
+        self.RESET_MENU_LABEL="リセット"
+        self.EXIT_MENU_LABEL="終了"
+
+        selreset_menu=menu_manage.Append(1, self.RESET_MENU_LABEL)
+        exit_menu=menu_manage.Append(2,self.EXIT_MENU_LABEL )
+        menu_manage.Bind(wx.EVT_MENU,self.onMenuManageClick)
         self.Append(menu_manage, '管理')
 
-  
-  
 class TextPanel(wx.Panel):
     """
     画面上部に表示されるテキスト部分
